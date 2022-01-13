@@ -1,0 +1,148 @@
+# Config
+EmbedColors:
+  Default: 0xFF4400
+  Error: 0xFF5555
+  Success: 0x25de1f
+
+Economy:
+  HighLow:
+    Min-Value: 1
+    Max-Value: 100
+
+Fun:
+  Rickroll:
+    [
+      "We're no strangers to love", "{user} knows the rules and so do I", "A full commitment's what I'm thinking of", "{user} wouldn't get this from any other guy", "I just wanna tell {user} how I'm feeling", "Gotta make {user} understand", "Never gonna give {user} up", "Never gonna let {user} down", "Never gonna run around and desert {user}", "Never gonna make {user} cry", "Never gonna say goodbye", "Never gonna tell a lie and hurt {user}", "We've known each other for so long", "{}'s heart's been aching but {} is too shy to say it", "Inside we both know what's been going on", "We know the game and we're gonna play it", "And if {} ask me how I'm feeling", "Don't tell me {} is too blind to see", "Never gonna give {user} up", "Never gonna let {user} down", "Never gonna run around and desert {user}", "Never gonna make {user} cry", "Never gonna say goodbye", "Never gonna tell a lie and hurt {user}", "Never gonna give {user} up", "Never gonna let {user} down", "Never gonna run around and desert {user}", "Never gonna make {user} cry", "Never gonna say goodbye", "Never gonna tell a lie and hurt {user}", "Never gonna give, never gonna give\n(Give {} up)", "We've known each other for so long", "{}'s heart's been aching but {} is too shy to say it", "Inside we both know what's been going on", "We know the game and we're gonna play it", "I just wanna tell {} how I'm feeling", "Gotta make {} understand", "Never gonna give {user} up", "Never gonna let {user} down", "Never gonna run around and desert {user}", "Never gonna make {user} cry", "Never gonna say goodbye", "Never gonna tell a lie and hurt {user}", "Never gonna give {user} up", "Never gonna let {user} down", "Never gonna run around and desert {user}", "Never gonna make {user} cry", "Never gonna say goodbye", "Never gonna tell a lie and hurt {user}", "Never gonna give, never gonna give\n(Give {} up)", "Never gonna give {user} up", "Never gonna let {user} down", "Never gonna run around and desert {user}", "Never gonna make {user} cry", "Never gonna say goodbye"
+    ]
+
+
+# EMBEDS CONFIGURATION
+
+Embeds:
+  Balance:
+    title: "%user%'s balance"
+    description: "<:money:870915092223512637> **Balance:** $%balance% \n:moneybag: **Bank:** $%bank%"
+    color: DEFAULT
+    timestamp: true
+  Deposit:
+    title: ":white_check_mark: Successfully Deposited Money"
+    description: "<:money:870915092223512637> **Balance:** $%balance% \n:moneybag: **Bank:** $%bank%"
+    color: SUCCESS
+    timestamp: true
+  Withdraw:
+    title: ":white_check_mark: Successfully Withdrew Money"
+    description: "<:money:870915092223512637> **Balance:** $%balance% \n:moneybag: **Bank:** $%bank%"
+    color: SUCCESS
+    timestamp: true
+  SetBalance:
+    title: ":moneybag: Money Set"
+    description: "%user%'s money has been updated!"
+    fields:
+      - name: "New wallet"
+        value: "`$%wallet%`"
+      - name: "New bank"
+        value: "`$%bank%`"
+    color: SUCCESS
+    timestamp: true
+  AddBalance:
+    title: ":moneybag: Money Added"
+    description: "%user%'s money has been updated!"
+    fields:
+      - name: "New wallet"
+        value: "`$%wallet%`"
+      - name: "New bank"
+        value: "`$%bank%`"
+    color: SUCCESS
+    timestamp: true
+  RemoveBalance:
+    title: ":moneybag: Money Removed"
+    description: "%user%'s money has been updated!"
+    fields:
+      - name: "New wallet"
+        value: "`$%wallet%`"
+      - name: "New bank"
+        value: "`$%bank%`"
+    color: SUCCESS
+    timestamp: true
+  SuccessBeg:
+    title: "%name%"
+    description: '"%message%"'
+    color: SUCCESS
+    timestamp: true
+  FailureBeg:
+    title: "%name%"
+    description: '"%message%"'
+    color: ERROR
+    footer:
+      text: "Imagine begging LMAO"
+    timestamp: true
+  HighLow:
+    author:
+      name: "%user%'s high-low game"
+      icon_url: "%user-icon-url%"
+    description: "I just chose a secret number between %min% and %max%. \nIs the secret number *higher* or *lower* than **%number%**."
+    color: DEFAULT
+    footer:
+      text: "The jackpot button is if you think it's the same!"
+    timestamp: true
+  HighLowExpired:
+    author:
+      name: "%user%'s expired high-low game"
+      icon_url: "%user-icon-url%"
+    description: "Too slow! \nYour hint was **%hint%** and the hidden number was **%number%**."
+    color: DEFAULT
+    footer:
+      text: "This game of high-low expired!"
+    timestamp: true
+  HighLowLost:
+    author:
+      name: "%user%'s losing high-low game"
+      icon_url: "%user-icon-url%"
+    description: "**You lost!** \n \nYour hint was **%hint%** and the hidden number was **%number%**."
+    color: ERROR
+    footer:
+      text: "loser loser"
+    timestamp: true
+  HighLowWon:
+    author:
+      name: "%user%'s winning high-low game"
+      icon_url: "%user-icon-url%"
+    description: "**You won $%amount%**! \n \nYour hint was **%hint%** and the hidden number was **%number%**."
+    color: SUCCESS
+    timestamp: true
+  Pay:
+    color: DEFAULT
+    fields:
+      - name: "Paid"
+        value: "`$%shared%`"
+        inline: false
+      - name: "Your pocket"
+        value: "`$%your-wallet%`"
+        inline: false
+      - name: "%receiver%'s pocket"
+        value: "`$%receiver-wallet%`"
+        inline: false
+    timestamp: true
+  ShowerThoughts:
+    title: "%title%"
+    url: "%url%"
+    color: DEFAULT
+    footer:
+      text: "%ups% | %comments%"
+    timestamp: true
+
+# MESSAGES CONFIGURATION
+
+Messages:
+  Invalid-Number: "Needs to be a whole number greater than 0"
+  Deposit-No-Money: "Deposit amount should be no more than what you have in your balance ($%balance%), or `max`"
+  Withdraw-No-Money: "Withdraw amount should be no more than what you have in your bank ($%bank%), or `max`"
+  Begging-Success:
+    [
+        "Oh you poor little beggar, take $%amount%!"
+    ]
+  Begging-Failure:
+    [
+        "HAHAHAHA no", "get out with that begging bullcrap"
+    ]
+  HighLow-HowItWorks: '__**This game is provably fair.**__ \n**What that means is that there is no way the bot can cheat you by picking a number that is in its favour.** \n \nThe way this works is that the secret is calculated using 3 parameters - the server seed, client seed and the modifier. Out of these, we show you the SHA256 hash of the server seed. You can also change the client seed if you wish by executing `/highlow <amount> [<client-seed>]`. It defaults to your user ID if it is not specified. The modifier is a SHA1 hash of the current timestamp to milliseconds. The server seed is the only part that is kept a secret until after the roll. \n \nThen, after you roll, you can check this page again, we will show you the server seed that was used for your secret. You can then verify this by using the following method which we use to calculate your secret. \n \n**How are high-low rolls calculated?** \n1. The hint is calculated by using a simple randomizer that chooses a random number between `1` and `100`. \n2. Two strings are created: \n> `STRING1 = "[MODIFIER]:[SERVER SEED]:[MODIFIER]"` \n> `STRING2 = "[MODIFIER]:[CLIENT SEED]:[MODIFIER]"` \n3. Then `HMAC-SHA512` is used to hash `STRING1` with `STRING2` as the secret key, giving us a `128` character hex string. \n4. The first `8` characters of the hex string are taken and converted to a decimal. \n5. This decimal is then divided by `42949672.95` and rounded off to the nearest whole number. \n6. This whole number is used as the secret, with the maximum possible value being `100`. \n \n*(( If you do not know what hashes are, they are basically complex algorithms that encode a value, and it is irreversible. ))*'
