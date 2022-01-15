@@ -130,6 +130,13 @@ Embeds:
     footer:
       text: "%ups% | %comments%"
     timestamp: true
+  Akinator:
+    title: "Is this your character?"
+    description: "%score%. %question%"
+    color: DEFAULT
+    footer:
+      text: "You have 30 seconds to answer"
+    timestamp: true
 
 # MESSAGES CONFIGURATION
 
