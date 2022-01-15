@@ -6,7 +6,7 @@ from nextcord.ext import commands
 
 from utils import Embed
 
-GUILD_IDS = [825894722324922438]
+GUILD_IDS = [825894722324922438, 928845819392716840]
 memeHistory = deque()
 
 

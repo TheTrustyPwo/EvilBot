@@ -7,7 +7,7 @@ from nextcord.ext import commands
 
 from utils import Database, Embed, Messages, ProvablyFair, Configuration
 
-GUILD_IDS = [825894722324922438]
+GUILD_IDS = [825894722324922438, 928845819392716840]
 
 
 class Economy(commands.Cog):
@@ -175,6 +175,14 @@ class Economy(commands.Cog):
                                                      ("%user-icon-url%", interaction.user.avatar.url),
                                                      ("%hint%", number), ("%number%", secret)]))
             Database.getDatabase().addUserMoney(interaction.user.id, -1 * bet, 0)
+
+    @slash_command(name="search", description="Search different places in hopes of finding money", guild_ids=GUILD_IDS)
+    async def search(self, interaction: Interaction):
+        cooldown, timeLeft = Database.getDatabase().isOnCooldown(interaction.user.id, "search")
+        if cooldown:
+            await interaction.response.send_message(f"ON COOLDOWN {timeLeft - int(time.time())} SECONDS LEFT")
+            return
+        Database.getDatabase().createCooldown(interaction.user.id, "search", 10)
 
 
 def setup(client: Client):
