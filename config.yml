@@ -137,6 +137,11 @@ Embeds:
     footer:
       text: "You have 30 seconds to answer"
     timestamp: true
+  Joke:
+    title: "Joke - %category%"
+    description: "**%joke%**"
+    color: DEFAULT
+    timestamp: true
 
 # MESSAGES CONFIGURATION
 
