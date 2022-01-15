@@ -10,7 +10,7 @@ class Database:
         self.connection = sqlite3.connect(DATABASE_FILE)
         self.cursor = self.connection.cursor()
         self.createTables()
-        Logger.info("asdf")
+        Logger.info("Connected to SQLite Database (Local)")
 
     def createTables(self):
         self.cursor.execute(
