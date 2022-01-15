@@ -1,0 +1,10 @@
+aiohttp==3.8.1
+akinator.py==5.0.0
+asyncio==3.4.3
+chardet==4.0.0
+colorama==0.4.4
+nextcord==2.0.0a6
+PyYAML==6.0
+regex==2021.11.10
+requests==2.27.1
+setuptools==60.5.0
