@@ -74,6 +74,11 @@ WAVE_PARROTS = [
     "<a:wave9parrot:772747642551664640>"
 ]
 
+test = [
+    "hi1",
+    "hi2",
+    "hi3"
+]
 
 class Fun(commands.Cog):
     def __init__(self, client: Client):
@@ -83,6 +88,10 @@ class Fun(commands.Cog):
     async def say(self, interaction: Interaction,
                   text: str = SlashOption(name="text", description="Text to say", required=True)):
         await interaction.response.send_message(text)
+
+    @slash_command(name="test", description="testing", guild_ids=GUILD_IDS)
+    async def test(self, interaction: Interaction):
+        await interaction.response.send_message("".join(test))
 
     @slash_command(name="spoiler", description="Say a text in annoying spoiler form!", guild_ids=GUILD_IDS)
     async def spoiler(self, interaction: Interaction,
