@@ -5,13 +5,13 @@ import time
 import string
 
 
-def generateServerSeed() -> (str, str):
+def generate_server_seed() -> (str, str):
     serverSeed = ''.join(
         random.SystemRandom().choice(string.ascii_lowercase + string.digits) for _ in range(64))
     return serverSeed, hashlib.sha256(serverSeed.encode("utf-8")).hexdigest()
 
 
-def generateNumber(serverSeed: str, clientSeed: str, modifier: str, maxValue: int = 100) -> int:
+def generate_number(serverSeed: str, clientSeed: str, modifier: str, maxValue: int = 100) -> int:
     serverSeed.encode("utf-8")
     key = "%s:%s:%s" % (modifier, serverSeed, modifier)  # HMAC Secret Key
     client = "%s:%s:%s" % (modifier, clientSeed, modifier)  # HMAC Client Key
@@ -23,5 +23,5 @@ def generateNumber(serverSeed: str, clientSeed: str, modifier: str, maxValue: in
     return min(round(decimal / 4294967295 * maxValue), maxValue)  # To whole number and ensure number <= 10000
 
 
-def getTimestampHash() -> str:
+def get_timestamp_hash() -> str:
     return hashlib.sha1(str(time.time()).encode("utf-8")).hexdigest()

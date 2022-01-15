@@ -144,7 +144,7 @@ class Economy(commands.Cog):
                                                      required=False)):
         client_seed = interaction.user.id if client_seed is None else (
             client_seed[:32] if len(client_seed) > 32 else client_seed)
-        server_seed, server_seed_hash = ProvablyFair.generateServerSeed()
+        server_seed, server_seed_hash = ProvablyFair.generate_server_seed()
         minimum = Configuration.getConfig()["Economy"]["HighLow"]["Min-Value"]
         maximum = Configuration.getConfig()["Economy"]["HighLow"]["Max-Value"]
         number = random.randint(minimum, maximum)
@@ -159,7 +159,7 @@ class Economy(commands.Cog):
                                                 view=view)
         message: InteractionMessage = await interaction.original_message()
         await view.wait()
-        secret = ProvablyFair.generateNumber(server_seed, client_seed, ProvablyFair.getTimestampHash(), maximum)
+        secret = ProvablyFair.generate_number(server_seed, client_seed, ProvablyFair.get_timestamp_hash(), maximum)
         if (view.value == "Lower" and secret < number) or (view.value == "Higher" and secret > number):
             await message.edit(embed=Embed.getEmbed("HighLowWon",
                                                     [("%user%", interaction.user.display_name),
@@ -168,7 +168,7 @@ class Economy(commands.Cog):
                                                      ("%amount%", "{:,}".format(bet))]))
             Database.getDatabase().addUserMoney(interaction.user.id, bet, 0)
         elif view.value == "Jackpot" and secret == number:
-            await interaction.response.send_message("JACKPTOTOOTOTT")
+            await interaction.response.send_message("JACKPOT!!!")
         else:
             await message.edit(embed=Embed.getEmbed("HighLowLost",
                                                     [("%user%", interaction.user.display_name),
