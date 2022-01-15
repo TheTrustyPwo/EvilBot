@@ -2,7 +2,7 @@ import datetime
 import time
 from enum import Enum
 
-import discord
+import nextcord
 
 from utils import Configuration
 
@@ -13,11 +13,11 @@ class EmbedColors(Enum):
     ERROR = Configuration.getConfig()["EmbedColors"]["Error"]
 
 
-def getEmbed(name: str, data: list = None) -> discord.Embed:
+def getEmbed(name: str, data: list = None) -> nextcord.Embed:
     data = [] if data is None else data
     embed = dict(Configuration.getConfig()["Embeds"][name]).copy()
     setPlaceholders(embed, data)
-    return discord.Embed.from_dict(embed)
+    return nextcord.Embed.from_dict(embed)
 
 
 def setPlaceholders(embed: dict, data: list):
