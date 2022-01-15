@@ -4,7 +4,7 @@ from nextcord import slash_command, Client, Interaction, SlashOption, Member, In
 from nextcord.ext import commands
 from utils import Configuration
 
-GUILD_IDS = [825894722324922438]
+GUILD_IDS = [825894722324922438, 928845819392716840]
 
 
 class Fun(commands.Cog):
@@ -27,25 +27,18 @@ class Fun(commands.Cog):
     @slash_command(name="rickroll", description="Rickroll someone!", guild_ids=GUILD_IDS)
     async def rickroll(self, interaction: Interaction,
                        user: Member = SlashOption(name="user", description="User to rickroll", required=False)):
-        if user is None:
-            user = random.choice(ctx.guild.members)
-        name = f"**{user.name}**"
+        user = random.choice(interaction.guild.members) if user is None else user
         full = ""
         emojis = ["🎸", "🎵", "🎼", "🎶", "🎧", "🎻", "🎹", "🎤", "📯", "🎷", "🎺"]
         await interaction.response.send_message(f"RickRolling {user}")
         message: InteractionMessage = await interaction.original_message()
         for line in Configuration.getConfig()["Fun"]["Rickroll"]:
-            front = random.choice(emojis)
-            back = random.choice(emojis)
-            text = line.replace("{user}", name)
-            text = text.replace("{}", name)
-            final = front + " " + text + " " + back
-            await message.edit(content=final)
-            full += final
-            full += "\n"
+            text = line.replace("{user}", f"**{user.name}**").replace("{}", f"**{user.name}**")
+            text = random.choice(emojis) + " " + text + " " + random.choice(emojis)
+            await message.edit(content=text)
+            full = full + text + "\n"
             await asyncio.sleep(1)
         await message.edit(nextcord.Embed(title=f"{user} just got rickrolled!", description=full))
-
 
 def setup(client: Client):
     client.add_cog(Fun(client))
