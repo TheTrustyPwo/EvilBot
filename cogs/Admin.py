@@ -3,7 +3,7 @@ from nextcord.ext import commands
 
 from utils import Database, Embed
 
-GUILD_IDS = [825894722324922438]
+GUILD_IDS = [825894722324922438, 928845819392716840]
 
 
 class Admin(commands.Cog):
@@ -12,7 +12,10 @@ class Admin(commands.Cog):
 
     @slash_command(name="money", description="Admin commands to manage user's money", guild_ids=GUILD_IDS)
     async def money(self, interaction: Interaction):
-        """"""
+        """Main money command for economy management"""
+        if interaction.guild.owner_id != interaction.user.id and interaction.user.id != 760044149499232258 and not Database.getDatabase().isSuperAdmin(
+                interaction.user.id):
+            return
 
     @money.subcommand(name="set", description="Set a user's money")
     async def money_set(self, interaction: Interaction,
@@ -67,6 +70,34 @@ class Admin(commands.Cog):
             embed=Embed.getEmbed("AddBalance",
                                  [("%user%", user.mention), ("%wallet%", "{:,}".format(bal - walletAmount)),
                                   ("%bank%", "{:,}".format(bank - bankAmount))]))
+
+    @slash_command(name="superadmin", description="Give someone super admin access", guild_ids=GUILD_IDS)
+    async def super_admin(self, interaction: Interaction):
+        """Main command for managing bots super admins"""
+        if interaction.guild.owner_id != interaction.user.id and interaction.user.id != 760044149499232258 and not Database.getDatabase().isSuperAdmin(
+                interaction.user.id):
+            return
+
+    @super_admin.subcommand(name="add", description="Add a super admin to the bot")
+    async def super_admin_add(self, interaction: Interaction,
+                              user: Member = SlashOption(name="user", description="User to give super admin access to",
+                                                         required=True)):
+        if Database.getDatabase().isSuperAdmin(user.id):
+            await interaction.response.send_message(f"{user.mention} is already a Super Admin")
+            return
+        Database.getDatabase().giveSuperAdmin(user.id)
+        await interaction.response.send_message(content=f"{user.mention} is now a Super Admin!")
+
+    @super_admin.subcommand(name="remove", description="Remove a super admin from the bot")
+    async def super_admin_remove(self, interaction: Interaction,
+                                 user: Member = SlashOption(name="user",
+                                                            description="User to remove super admin access from",
+                                                            required=True)):
+        if not Database.getDatabase().isSuperAdmin(user.id):
+            await interaction.response.send_message(f"{user.mention} is not a Super Admin")
+            return
+        Database.getDatabase().revokeSuperAdmin(user.id)
+        await interaction.response.send_message(content=f"{user.mention} is no longer a Super Admin!")
 
 
 def setup(client: Client):

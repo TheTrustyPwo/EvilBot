@@ -17,6 +17,7 @@ class Database:
             "CREATE TABLE IF NOT EXISTS Money(UID varchar(18) NOT NULL UNIQUE, Balance integer, Bank integer, PRIMARY KEY (UID))")
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS Cooldown(ID integer AUTO_INCREMENT, UID varchar(18), Command varchar(36), Cooldown integer, PRIMARY KEY (ID))")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS SuperAdmins(ID integer AUTO_INCREMENT, UID varchar(18), PRIMARY KEY (ID))")
 
     def getUserMoney(self, userId: int) -> (int, int):
         self.cursor.execute("SELECT Balance, Bank FROM Money WHERE UID=?", (userId,))
@@ -53,6 +54,19 @@ class Database:
     def removeExpiredCooldown(self):
         self.cursor.execute("DELETE FROM Cooldown WHERE Cooldown <= ?", (int(time.time()),))
         Logger.info("Removed expired cooldowns")
+
+    def isSuperAdmin(self, userId: int) -> bool:
+        self.cursor.execute("SELECT * FROM SuperAdmins WHERE UID=?", (userId,))
+        result = self.cursor.fetchall()
+        if not result:
+            return False
+        return True
+
+    def giveSuperAdmin(self, userId: int):
+        self.cursor.execute("INSERT INTO SuperAdmins(UID) VALUES (?)", (userId,))
+
+    def revokeSuperAdmin(self, userId: int):
+        self.cursor.execute("DELETE FROM SuperAdmins WHERE UID=?", (userId,))
 
 
 database = Database()
