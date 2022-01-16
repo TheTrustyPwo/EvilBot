@@ -3,10 +3,9 @@ from collections import deque
 import aiohttp
 from nextcord import slash_command, Client, Interaction
 from nextcord.ext import commands
-
+from utils.Configuration import get, get_global, get_guild_ids
 from utils import Embed
 
-GUILD_IDS = [825894722324922438, 928845819392716840]
 memeHistory = deque()
 
 
@@ -31,7 +30,7 @@ class Memes(commands.Cog):
     def __init__(self, client: Client):
         self.client = client
 
-    @slash_command(name="showerthoughts", description="Things to think about in the shower", guild_ids=GUILD_IDS)
+    @slash_command(name="showerthoughts", description="Things to think about in the shower", guild_ids=get_guild_ids(), force_global=get_global())
     async def showerthoughts(self, interaction: Interaction):
         post = await getRedditPosts("showerthoughts")
         await interaction.response.send_message(embed=Embed.getEmbed("ShowerThoughts", [("%title%", post["title"]),

@@ -8,14 +8,14 @@ from utils import Configuration
 
 
 class EmbedColors(Enum):
-    DEFAULT = Configuration.getConfig()["EmbedColors"]["Default"]
-    SUCCESS = Configuration.getConfig()["EmbedColors"]["Success"]
-    ERROR = Configuration.getConfig()["EmbedColors"]["Error"]
+    DEFAULT = Configuration.get()["EmbedColors"]["Default"]
+    SUCCESS = Configuration.get()["EmbedColors"]["Success"]
+    ERROR = Configuration.get()["EmbedColors"]["Error"]
 
 
 def getEmbed(name: str, data: list = None) -> nextcord.Embed:
     data = [] if data is None else data
-    embed = dict(Configuration.getConfig()["Embeds"][name]).copy()
+    embed = dict(Configuration.get()["Embeds"][name]).copy()
     setPlaceholders(embed, data)
     return nextcord.Embed.from_dict(embed)
 

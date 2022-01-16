@@ -5,16 +5,15 @@ import nextcord
 from nextcord import slash_command, Interaction, Client, SlashOption, Member, InteractionMessage
 from nextcord.ext import commands
 
-from utils import Database, Embed, Messages, ProvablyFair, Configuration
-
-GUILD_IDS = [825894722324922438, 928845819392716840]
+from utils import Database, Embed, Messages, ProvablyFair
+from utils.Configuration import get, get_global, get_guild_ids
 
 
 class Economy(commands.Cog):
     def __init__(self, client: Client):
         self.client = client
 
-    @slash_command(name="balance", description="Checks a user's balance", guild_ids=GUILD_IDS)
+    @slash_command(name="balance", description="Checks a user's balance", guild_ids=get_guild_ids(), force_global=get_global())
     async def balance(self, interaction: Interaction,
                       user: Member = SlashOption(name="user", description="Specify the user to check their balance",
                                                  required=False)):
@@ -24,7 +23,7 @@ class Economy(commands.Cog):
             "Balance",
             [("%user%", user.display_name), ("%balance%", "{:,}".format(bal)), ("%bank%", "{:,}".format(bank))]))
 
-    @slash_command(name="deposit", description="Deposit money into your bank", guild_ids=GUILD_IDS)
+    @slash_command(name="deposit", description="Deposit money into your bank", guild_ids=get_guild_ids(), force_global=get_global())
     async def deposit(self, interaction: Interaction,
                       amount: int = SlashOption(name="amount", description="The amount you want to deposit",
                                                 required=True, autocomplete=True, default=1)):
@@ -51,7 +50,7 @@ class Economy(commands.Cog):
     async def deposit_autocomplete(self, interaction: Interaction, amount: int):
         await interaction.response.send_autocomplete([Database.getDatabase().getUserMoney(interaction.user.id)[0]])
 
-    @slash_command(name="withdraw", description="Withdraws your money from the bank", guild_ids=GUILD_IDS)
+    @slash_command(name="withdraw", description="Withdraws your money from the bank", guild_ids=get_guild_ids(), force_global=get_global())
     async def withdraw(self, interaction: Interaction,
                        amount: int = SlashOption(name="amount", description="The amount you want to withdraw",
                                                  required=True, autocomplete=True, default=1)):
@@ -73,7 +72,7 @@ class Economy(commands.Cog):
     async def withdraw_autocomplete(self, interaction: Interaction, amount: int):
         await interaction.response.send_autocomplete([Database.getDatabase().getUserMoney(interaction.user.id)[1]])
 
-    @slash_command(name="beg", description="Beg strangers for money", guild_ids=GUILD_IDS)
+    @slash_command(name="beg", description="Beg strangers for money", guild_ids=get_guild_ids(), force_global=get_global())
     async def beg(self, interaction: Interaction):
         cooldown, timeLeft = Database.getDatabase().isOnCooldown(interaction.user.id, "beg")
         if cooldown:
@@ -93,7 +92,7 @@ class Economy(commands.Cog):
                 embed=Embed.getEmbed("FailureBeg", [("%name%", random.choice(interaction.guild.members).display_name),
                                                     ("%message%", Messages.getMessage("Begging-Failure"))]))
 
-    @slash_command(name="pay", description="Send money to someone quickly", guild_ids=GUILD_IDS)
+    @slash_command(name="pay", description="Send money to someone quickly", guild_ids=get_guild_ids(), force_global=get_global())
     async def pay(self, interaction: Interaction,
                   user: Member = SlashOption(name="user", description="The user to pay", required=True),
                   amount: int = SlashOption(name="amount", description="The amount to pay", required=True)):
@@ -137,7 +136,7 @@ class Economy(commands.Cog):
         async def howItWorks(self, button: nextcord.ui.button, interaction: Interaction):
             await interaction.response.send_message(Messages.getMessage("HighLow-HowItWorks"), ephemeral=True)
 
-    @slash_command(name="highlow", description="Bet on the high-low game!", guild_ids=GUILD_IDS)
+    @slash_command(name="highlow", description="Bet on the high-low game!", guild_ids=get_guild_ids(), force_global=get_global())
     async def highlow(self, interaction: Interaction,
                       bet: int = SlashOption(name="bet", description="How much you want to bet", required=True),
                       client_seed: str = SlashOption(name="client_seed", description="Specify your client seed",
@@ -145,8 +144,8 @@ class Economy(commands.Cog):
         client_seed = interaction.user.id if client_seed is None else (
             client_seed[:32] if len(client_seed) > 32 else client_seed)
         server_seed, server_seed_hash = ProvablyFair.generate_server_seed()
-        minimum = Configuration.getConfig()["Economy"]["HighLow"]["Min-Value"]
-        maximum = Configuration.getConfig()["Economy"]["HighLow"]["Max-Value"]
+        minimum = get()["Economy"]["HighLow"]["Min-Value"]
+        maximum = get()["Economy"]["HighLow"]["Max-Value"]
         number = random.randint(minimum, maximum)
         view = self.HighLow()
         await interaction.response.send_message(embed=Embed.getEmbed("HighLow",
@@ -176,7 +175,7 @@ class Economy(commands.Cog):
                                                      ("%hint%", number), ("%number%", secret)]))
             Database.getDatabase().addUserMoney(interaction.user.id, -1 * bet, 0)
 
-    @slash_command(name="search", description="Search different places in hopes of finding money", guild_ids=GUILD_IDS)
+    @slash_command(name="search", description="Search different places in hopes of finding money", guild_ids=get_guild_ids(), force_global=get_global())
     async def search(self, interaction: Interaction):
         cooldown, timeLeft = Database.getDatabase().isOnCooldown(interaction.user.id, "search")
         if cooldown:

@@ -1,13 +1,13 @@
 import asyncio
 import random
-
+import nextcord
 import aiohttp
 from nextcord import slash_command, Client, Interaction, SlashOption, Member, InteractionMessage
 from nextcord.ext import commands
 
-from utils import Configuration, Embed
+from utils import Embed
+from utils.Configuration import get, get_global, get_guild_ids
 
-GUILD_IDS = [825894722324922438, 928845819392716840]
 EMOJIS = [
     '( ͡° ͜ʖ ͡°)', '¯\\_(ツ)_/¯', 'ʕ•ᴥ•ʔ', '(▀̿Ĺ̯▀̿ ̿)', '(ง ͠° ͟ل͜ ͡°)ง', 'ಠ_ಠ',
     "̿'̿'\\̵͇̿̿\\з=( ͠° ͟ʖ ͡°)=ε/̵͇̿̿/'̿̿ ̿ ̿ ̿ ̿ ̿", '[̲̅$̲̅(̲̅5̲̅)̲̅$̲̅]', "﴾͡๏̯͡๏﴿ O'RLY?",
@@ -79,12 +79,12 @@ class Fun(commands.Cog):
     def __init__(self, client: Client):
         self.client = client
 
-    @slash_command(name="say", description="Make the bot say whatever you want", guild_ids=GUILD_IDS)
+    @slash_command(name="say", description="Make the bot say whatever you want", guild_ids=get_guild_ids(), force_global=get_global())
     async def say(self, interaction: Interaction,
                   text: str = SlashOption(name="text", description="Text to say", required=True)):
         await interaction.response.send_message(text)
 
-    @slash_command(name="spoiler", description="Say a text in annoying spoiler form!", guild_ids=GUILD_IDS)
+    @slash_command(name="spoiler", description="Say a text in annoying spoiler form!", guild_ids=get_guild_ids(), force_global=get_global())
     async def spoiler(self, interaction: Interaction,
                       text: str = SlashOption(name="text", description="Text to spoil", required=True)):
         string: str = ""
@@ -92,7 +92,7 @@ class Fun(commands.Cog):
             string += f"||{char}||"
         await interaction.response.send_message(string)
 
-    @slash_command(name="rickroll", description="Rickroll someone!", guild_ids=GUILD_IDS)
+    @slash_command(name="rickroll", description="Rickroll someone!", guild_ids=get_guild_ids(), force_global=get_global())
     async def rickroll(self, interaction: Interaction,
                        user: Member = SlashOption(name="user", description="User to rickroll", required=False)):
         user = random.choice(interaction.guild.members) if user is None else user
@@ -100,29 +100,29 @@ class Fun(commands.Cog):
         emojis = ["🎸", "🎵", "🎼", "🎶", "🎧", "🎻", "🎹", "🎤", "📯", "🎷", "🎺"]
         await interaction.response.send_message(f"RickRolling {user}")
         message: InteractionMessage = await interaction.original_message()
-        for line in Configuration.getConfig()["Fun"]["Rickroll"]:
+        for line in Configuration.get()["Fun"]["Rickroll"]:
             text = line.replace("{user}", f"**{user.name}**").replace("{}", f"**{user.name}**")
             text = random.choice(emojis) + " " + text + " " + random.choice(emojis)
             await message.edit(content=text)
             full = full + text + "\n"
             await asyncio.sleep(1)
-        await message.edit(nextcord.Embed(title=f"{user} just got rickrolled!", description=full))
+        await message.edit(embed=nextcord.Embed(title=f"{user} just got rickrolled!", description=full))
 
-    @slash_command(name="emoji", description="Make the bot say a random emoji", guild_ids=GUILD_IDS)
+    @slash_command(name="emoji", description="Make the bot say a random emoji", guild_ids=get_guild_ids(), force_global=get_global())
     async def emoji(self, interaction: Interaction):
         emoji = random.choice(EMOJIS)
         await interaction.response.send_message(emoji)
 
-    @slash_command(name="parrot", description="Replies with a random parrot", guild_ids=GUILD_IDS)
+    @slash_command(name="parrot", description="Replies with a random parrot", guild_ids=get_guild_ids(), force_global=get_global())
     async def parrot(self, interaction: Interaction):
         parrot = random.choice(PARROTS)
         await interaction.response.send_message(parrot)
 
-    @slash_command(name="parrot_wave", description="Make a wave of parrots!", guild_ids=GUILD_IDS)
+    @slash_command(name="parrot_wave", description="Make a wave of parrots!", guild_ids=get_guild_ids(), force_global=get_global())
     async def parrot_wave(self, interaction: Interaction):
         await interaction.response.send_message(''.join(WAVE_PARROTS))
 
-    @slash_command(name="joke", description="Wanna hear a joke?", guild_ids=GUILD_IDS)
+    @slash_command(name="joke", description="Wanna hear a joke?", guild_ids=get_guild_ids(), force_global=get_global())
     async def joke(self, interaction: Interaction,
                    category: str = SlashOption(name="category", description="Specify a category",
                                                choices=["Pun", "Programming", "Miscellaneous", "Dark", "Spooky",

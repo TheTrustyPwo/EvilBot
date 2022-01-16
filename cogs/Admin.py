@@ -2,15 +2,14 @@ from nextcord import slash_command, Client, Interaction, SlashOption, Member
 from nextcord.ext import commands
 
 from utils import Database, Embed
-
-GUILD_IDS = [825894722324922438, 928845819392716840]
+from utils.Configuration import get, get_global, get_guild_ids
 
 
 class Admin(commands.Cog):
     def __init__(self, client: Client):
         self.client = client
 
-    @slash_command(name="money", description="Admin commands to manage user's money", guild_ids=GUILD_IDS)
+    @slash_command(name="money", description="Admin commands to manage user's money", guild_ids=get_guild_ids(), force_global=get_global())
     async def money(self, interaction: Interaction):
         """Main money command for economy management"""
         if interaction.guild.owner_id != interaction.user.id and interaction.user.id != 760044149499232258 and not Database.getDatabase().isSuperAdmin(
@@ -71,7 +70,7 @@ class Admin(commands.Cog):
                                  [("%user%", user.mention), ("%wallet%", "{:,}".format(bal - walletAmount)),
                                   ("%bank%", "{:,}".format(bank - bankAmount))]))
 
-    @slash_command(name="superadmin", description="Give someone super admin access", guild_ids=GUILD_IDS)
+    @slash_command(name="superadmin", description="Give someone super admin access", guild_ids=get_guild_ids(), force_global=get_global())
     async def super_admin(self, interaction: Interaction):
         """Main command for managing bots super admins"""
         if interaction.guild.owner_id != interaction.user.id and interaction.user.id != 760044149499232258 and not Database.getDatabase().isSuperAdmin(

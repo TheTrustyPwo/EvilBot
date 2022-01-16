@@ -5,7 +5,7 @@ from utils import Configuration
 
 def getMessage(name: str, data: list = None) -> str:
     data = [] if data is None else data
-    value = Configuration.getConfig()["Messages"][name]
+    value = Configuration.get()["Messages"][name]
     if isinstance(value, list):
         value = random.choice(value)
     for i in data:
