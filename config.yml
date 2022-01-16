@@ -1,4 +1,9 @@
 # Config
+
+Token: "ODQ2NzM3NzQwOTI5NTY0Njcy.YKz3-Q.w-pf29MtNdXDjb0GwKtPHGk4hnM"
+Guild-IDs: [825894722324922438, 928845819392716840]
+Global-Slash-Commands: False # Enabling this will override Guild-IDs
+
 EmbedColors:
   Default: 0xFF4400
   Error: 0xFF5555
