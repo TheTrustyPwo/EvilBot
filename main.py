@@ -4,8 +4,7 @@ import sys
 import nextcord
 from nextcord.ext import commands
 import requests
-from utils import Database
-from utils import Logger
+from utils import Database, Logger, Configuration
 
 Logger.info("Checking for rate limits")
 response = requests.head(url="https://discord.com/api/v1")
@@ -32,6 +31,7 @@ async def on_ready():
     Logger.info(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     Logger.gap()
 
+
 def getListOfFiles(dirName):
     listOfFile = os.listdir(dirName)
     allFiles = list()
@@ -46,17 +46,16 @@ def getListOfFiles(dirName):
 
 if __name__ == "__main__":
     Logger.info("Loading cogs")
-    n = 0
+    loaded = 0
     for file in getListOfFiles("./cogs"):
         if file.endswith(".py"):
             extension = file[2:-3].replace('\\', '.')
             try:
                 client.load_extension(extension)
-                n += 1
+                loaded += 1
             except Exception as e:
                 exception = f"{type(e).__name__}: {e}"
                 Logger.warn(f"Failed to load cog: {extension} \n {exception}")
-    Logger.info(f"Loaded {n} cogs!")
-    # client.load_extension("cogs.AI")
+    Logger.info(f"Loaded {loaded} cogs!")
 
-client.run("ODQ2NzM3NzQwOTI5NTY0Njcy.YKz3-Q.w-pf29MtNdXDjb0GwKtPHGk4hnM")
+client.run(Configuration.get()["Token"])
