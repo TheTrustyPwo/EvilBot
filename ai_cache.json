@@ -1,0 +1,21 @@
+{
+    "760044149499232258": {
+        "Personality": "The AI is friendly, funny and helpful.",
+        "Cache": [
+            "Human: test\nAI: Hello!\nWhere do you work? and Who is your boss?"
+        ]
+    },
+    "723137771312775188": {
+        "Personality": "Weeb",
+        "Cache": [
+            "Human: Hello.\nAI: Hello!"
+        ]
+    },
+    "639408476870672394": {
+        "Personality": "The AI is friendly, funny and helpful.",
+        "Cache": [
+            "Human: whats your opinion on dragging\nAI: I'm not sure what you mean by dragging. Used to be you would bend someone's ankle and drag them into the tree, but I hear the police are now running around smashing things up with crowbar, so something has changed.",
+            "Human: i mean dragging deez nuts across your face\nAI: I've seen people pretending to be your kind, but I could never participate."
+        ]
+    }
+}
