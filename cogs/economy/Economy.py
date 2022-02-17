@@ -112,68 +112,6 @@ class Economy(commands.Cog):
                                                                                                "{:,}".format(
                                                                                                    receiverBal))]))
 
-    class HighLow(nextcord.ui.View):
-        def __init__(self):
-            super().__init__()
-            self.value = None
-
-        @nextcord.ui.button(label="Lower", style=nextcord.ButtonStyle.primary)
-        async def lower(self, button: nextcord.ui.Button, interaction: Interaction):
-            self.value = "Lower"
-            self.stop()
-
-        @nextcord.ui.button(label="JACKPOT", style=nextcord.ButtonStyle.primary)
-        async def jackpot(self, button: nextcord.ui.Button, interaction: Interaction):
-            self.value = "Jackpot"
-            self.stop()
-
-        @nextcord.ui.button(label="Higher", style=nextcord.ButtonStyle.primary)
-        async def higher(self, button: nextcord.ui.Button, interaction: Interaction):
-            self.value = "Higher"
-            self.stop()
-
-        @nextcord.ui.button(label="❓ How it works?", style=nextcord.ButtonStyle.green)
-        async def howItWorks(self, button: nextcord.ui.button, interaction: Interaction):
-            await interaction.response.send_message(Messages.getMessage("HighLow-HowItWorks"), ephemeral=True)
-
-    @slash_command(name="highlow", description="Bet on the high-low game!", guild_ids=get_guild_ids(), force_global=get_global())
-    async def highlow(self, interaction: Interaction,
-                      bet: int = SlashOption(name="bet", description="How much you want to bet", required=True),
-                      client_seed: str = SlashOption(name="client_seed", description="Specify your client seed",
-                                                     required=False)):
-        client_seed = interaction.user.id if client_seed is None else (
-            client_seed[:32] if len(client_seed) > 32 else client_seed)
-        server_seed, server_seed_hash = ProvablyFair.generate_server_seed()
-        minimum = get()["Economy"]["HighLow"]["Min-Value"]
-        maximum = get()["Economy"]["HighLow"]["Max-Value"]
-        number = random.randint(minimum, maximum)
-        view = self.HighLow()
-        await interaction.response.send_message(embed=Embed.getEmbed("HighLow",
-                                                                     [("%user%",
-                                                                       interaction.user.display_name),
-                                                                      ("%user-icon-url%",
-                                                                       interaction.user.avatar.url),
-                                                                      ("%min%", minimum), ("%max%", maximum),
-                                                                      ("%number%", number)]),
-                                                view=view)
-        message: InteractionMessage = await interaction.original_message()
-        await view.wait()
-        secret = ProvablyFair.generate_number(server_seed, client_seed, ProvablyFair.get_timestamp_hash(), maximum)
-        if (view.value == "Lower" and secret < number) or (view.value == "Higher" and secret > number):
-            await message.edit(embed=Embed.getEmbed("HighLowWon",
-                                                    [("%user%", interaction.user.display_name),
-                                                     ("%user-icon-url%", interaction.user.avatar.url),
-                                                     ("%hint%", number), ("%number%", secret),
-                                                     ("%amount%", "{:,}".format(bet))]))
-            Database.getDatabase().addUserMoney(interaction.user.id, bet, 0)
-        elif view.value == "Jackpot" and secret == number:
-            await interaction.response.send_message("JACKPOT!!!")
-        else:
-            await message.edit(embed=Embed.getEmbed("HighLowLost",
-                                                    [("%user%", interaction.user.display_name),
-                                                     ("%user-icon-url%", interaction.user.avatar.url),
-                                                     ("%hint%", number), ("%number%", secret)]))
-            Database.getDatabase().addUserMoney(interaction.user.id, -1 * bet, 0)
 
     @slash_command(name="search", description="Search different places in hopes of finding money", guild_ids=get_guild_ids(), force_global=get_global())
     async def search(self, interaction: Interaction):

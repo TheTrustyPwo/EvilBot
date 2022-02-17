@@ -1,12 +1,12 @@
 # Config
 
-Token: "ODQ2NzM3NzQwOTI5NTY0Njcy.YKz3-Q.w-pf29MtNdXDjb0GwKtPHGk4hnM"
+Token: "ODQ2NzM3NzQwOTI5NTY0Njcy.YKz3-Q.YorQioFXBJ4lMtdzCT9BzjkFD6o"
 Guild-IDs: [825894722324922438, 928845819392716840]
 Global-Slash-Commands: False # Enabling this will override Guild-IDs
-OpenAI-Key: "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"
+OpenAI-Key: "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"
 
 EmbedColors:
-  Default: 0xFF4400
+  Default: 0xFFA500
   Error: 0xFF5555
   Success: 0x25de1f
 
@@ -86,10 +86,26 @@ Embeds:
     author:
       name: "%user%'s high-low game"
       icon_url: "%user-icon-url%"
-    description: "I just chose a secret number between %min% and %max%. \nIs the secret number *higher* or *lower* than **%number%**."
+    description: "**----->>>** :zero::zero::zero::zero::zero: **<<<-----** \nTo win, BET HI and get a number higher than **%hi%** \nOr BET LO and get a number lower than **%lo%** \n\n**__Betting Information__** \n**Balance** » $%balance% \n**Bet Amount** » $%bet% \n**Win Profit** » $%win-profit% \n**Jackpot Win** » $%jackpot-win% \n**Bet Odds** » %bet-odds% \n**Win Chance** » %win-chance%% \n\n**__Generator Information__** (For next roll) \n**Server Seed Hash (SHA256)** » `%server-seed-hash%` \n**Client Seed** » `%client-seed%` \n**Timestamp Hash** » `%timestamp-hash%`\n**Server Seed (Last Roll)** » `%last-server-seed%` \n*((  Check bet history with `/casino history` ))*"
     color: DEFAULT
     footer:
-      text: "The jackpot button is if you think it's the same!"
+      text: "Rolling 8888 will win you the jackpot!"
+    timestamp: true
+  HighLow-EditBet:
+    author:
+      name: "%user%'s high-low game | Editing bet"
+      icon_url: "%user-icon-url%"
+    fields:
+      - name: "Bet Amount"
+        value: "%bet%"
+        inline: true
+      - name: "Win Profit"
+        value: "%win-profit%"
+        inline: true
+      - name: "Jackpot Win"
+        value: "%jackpot-win%"
+        inline: true
+    color: DEFAULT
     timestamp: true
   HighLowExpired:
     author:
@@ -102,19 +118,21 @@ Embeds:
     timestamp: true
   HighLowLost:
     author:
-      name: "%user%'s losing high-low game"
+      name: "%user%'s high-low game"
       icon_url: "%user-icon-url%"
-    description: "**You lost!** \n \nYour hint was **%hint%** and the hidden number was **%number%**."
+    description: "**----->>>** %number% **<<<-----** \nTo win, BET HI and get a number higher than **%hi%** \nOr BET LO and get a number lower than **%lo%** \n**You BET __%bet-option%__ and lost __$%bet%__!** \n\n**__Betting Information__** \n**Balance** » $%balance% \n**Bet Amount** » $%bet% \n**Win Profit** » $%win-profit% \n**Jackpot Win** » $%jackpot-win% \n**Bet Odds** » %bet-odds% \n**Win Chance** » %win-chance%% \n\n**__Generator Information__** (For next roll) \n**Server Seed Hash (SHA256)** » `%server-seed-hash%` \n**Client Seed** » `%client-seed%` \n**Timestamp Hash** » `%timestamp-hash%`\n**Server Seed (Last Roll)** » `%last-server-seed%` \n*((  Check bet history with `/casino history` ))*"
     color: ERROR
     footer:
-      text: "loser loser"
+      text: "Rolling 8888 will win you the jackpot!"
     timestamp: true
   HighLowWon:
     author:
-      name: "%user%'s winning high-low game"
+      name: "%user%'s high-low game"
       icon_url: "%user-icon-url%"
-    description: "**You won $%amount%**! \n \nYour hint was **%hint%** and the hidden number was **%number%**."
+    description: "**----->>>** %number% **<<<-----** \nTo win, BET HI and get a number higher than **%hi%** \nOr BET LO and get a number lower than **%lo%** \n**You BET __%bet-option%__ and won __$%win-profit%__!** \n\n**__Betting Information__** \n**Balance** » $%balance% \n**Bet Amount** » $%bet% \n**Win Profit** » $%win-profit% \n**Jackpot Win** » $%jackpot-win% \n**Bet Odds** » %bet-odds% \n**Win Chance** » %win-chance%% \n\n**__Generator Information__** (For next roll) \n**Server Seed Hash (SHA256)** » `%server-seed-hash%` \n**Client Seed** » `%client-seed%` \n**Timestamp Hash** » `%timestamp-hash%`\n**Server Seed (Last Roll)** » `%last-server-seed%` \n*((  Check bet history with `/casino history` ))*"
     color: SUCCESS
+    footer:
+      text: "Rolling 8888 will win you the jackpot!"
     timestamp: true
   Pay:
     color: DEFAULT
@@ -174,5 +192,5 @@ Messages:
     [
         "HAHAHAHA no", "get out with that begging bullcrap"
     ]
-  HighLow-HowItWorks: '__**This game is provably fair.**__ \n**What that means is that there is no way the bot can cheat you by picking a number that is in its favour.** \n \nThe way this works is that the secret is calculated using 3 parameters - the server seed, client seed and the modifier. Out of these, we show you the SHA256 hash of the server seed. You can also change the client seed if you wish by executing `/highlow <amount> [<client-seed>]`. It defaults to your user ID if it is not specified. The modifier is a SHA1 hash of the current timestamp to milliseconds. The server seed is the only part that is kept a secret until after the roll. \n \nThen, after you roll, you can check this page again, we will show you the server seed that was used for your secret. You can then verify this by using the following method which we use to calculate your secret. \n \n**How are high-low rolls calculated?** \n1. The hint is calculated by using a simple randomizer that chooses a random number between `1` and `100`. \n2. Two strings are created: \n> `STRING1 = "[MODIFIER]:[SERVER SEED]:[MODIFIER]"` \n> `STRING2 = "[MODIFIER]:[CLIENT SEED]:[MODIFIER]"` \n3. Then `HMAC-SHA512` is used to hash `STRING1` with `STRING2` as the secret key, giving us a `128` character hex string. \n4. The first `8` characters of the hex string are taken and converted to a decimal. \n5. This decimal is then divided by `42949672.95` and rounded off to the nearest whole number. \n6. This whole number is used as the secret, with the maximum possible value being `100`. \n \n*(( If you do not know what hashes are, they are basically complex algorithms that encode a value, and it is irreversible. ))*'
+  HighLow-HowItWorks: '__**This game is provably fair.**__ \n**What that means is that there is no way the bot can cheat you by picking a number that is in its favour.** \n \nThe way this works is that the secret is calculated using 3 parameters - the server seed, client seed and the modifier. Out of these, we show you the SHA256 hash of the server seed. You can also change the client seed if you wish by executing `/highlow <amount> [<client-seed>]`. It defaults to your user ID if it is not specified. The modifier is a SHA1 hash of the current timestamp to milliseconds. The server seed is the only part that is kept a secret until after the roll. \n \nThen, after you roll, we will show you the server seed that was used for your secret. You can then verify this by using the following method which we use to calculate your secret. \n \n**How are high-low rolls calculated?** \n1. The hint is calculated by using a simple randomizer that chooses a random number between `1` and `100`. \n2. Two strings are created: \n> `STRING1 = "[MODIFIER]:[SERVER SEED]:[MODIFIER]"` \n> `STRING2 = "[MODIFIER]:[CLIENT SEED]:[MODIFIER]"` \n3. Then `HMAC-SHA512` is used to hash `STRING1` with `STRING2` as the secret key, giving us a `128` character hex string. \n4. The first `8` characters of the hex string are taken and converted to a decimal. \n5. This decimal is then divided by `42949672.95` and rounded off to the nearest whole number. \n6. This whole number is used as the secret, with the maximum possible value being `100`. \n \n*(( If you do not know what hashes are, they are basically complex algorithms that encode a value, and it is irreversible. ))*'
   Choose-Not-Enough-Options: "You must provide more than 2 options to choose from!"

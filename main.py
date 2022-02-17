@@ -14,7 +14,7 @@ try:
 except:
     Logger.info("No rate limit detected")
 
-Database.getDatabase().removeExpiredCooldown()
+# Database.getDatabase().removeExpiredCooldown()
 
 intents = nextcord.Intents().all()
 client = commands.Bot(command_prefix=".", intents=intents)
