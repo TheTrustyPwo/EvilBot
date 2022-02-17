@@ -1,5 +1,9 @@
 import sqlite3
+import pymongo
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 import time
+import urllib
 from utils import Logger
 
 DATABASE_FILE = "database.sqlite"
@@ -7,29 +11,20 @@ DATABASE_FILE = "database.sqlite"
 
 class Database:
     def __init__(self):
-        self.connection = sqlite3.connect(DATABASE_FILE)
-        self.cursor = self.connection.cursor()
-        self.createTables()
-        Logger.info("Connected to SQLite Database (Local)")
-
-    def createTables(self):
-        self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS Money(UID varchar(18) NOT NULL UNIQUE, Balance integer, Bank integer, PRIMARY KEY (UID))")
-        self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS Cooldown(ID integer AUTO_INCREMENT, UID varchar(18), Command varchar(36), Cooldown integer, PRIMARY KEY (ID))")
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS SuperAdmins(ID integer AUTO_INCREMENT, UID varchar(18), PRIMARY KEY (ID))")
+        self.client = MongoClient("mongodb+srv://admin:LjaDjjMvl5e7MacW@evil.cyykl.mongodb.net/test?retryWrites=true&w=majority", server_api=ServerApi('1'))
+        self.database = self.client["test"]
+        self.money = self.database["money"]
+        Logger.info("Connected to MongoDB (Remote)")
 
     def getUserMoney(self, userId: int) -> (int, int):
-        self.cursor.execute("SELECT Balance, Bank FROM Money WHERE UID=?", (userId,))
-        result = self.cursor.fetchall()
-        if not result:
-            return 0, 0
-        else:
-            return result[0][0], result[0][1]
+        return 999999999, 999999999
+        # result = self.money.find_one({"_id": userId})
+        # if result is None:
+        #     return 0, 0
+        # return result["balance"], result["bank"]
 
     def updateUserMoney(self, userId: int, balance: int, bank: int) -> None:
-        self.cursor.execute("INSERT OR REPLACE INTO Money(UID, Balance, Bank) VALUES (?,?,?)", (userId, balance, bank))
-        self.connection.commit()
+        self.money.replace_one({"_id": userId}, {"balance": balance, "bank": bank}, upsert=True)
 
     def addUserMoney(self, userId: int, balance: int, bank: int):
         bal, bankBal = self.getUserMoney(userId)
