@@ -67,7 +67,7 @@ def chat(user: Member, message: str) -> str:
     cache = '\n'.join(get_cache(user))
     prompt = f"The following is a conversation with an AI chatbot. {personality}\n{cache}Human: {message}\nAI:"
     response = completion.create(
-        prompt=prompt, engine="curie", stop=['Human', 'human', 'AI'], temperature=0.9,
+        prompt=prompt, engine="davinci", stop=['Human', 'human', 'AI'], temperature=0.9,
         top_p=1, frequency_penalty=0, presence_penalty=0.6, best_of=1,
         max_tokens=100)
     response = response.choices[0].text.strip()
