@@ -1,5 +1,6 @@
 import datetime
 import time
+import copy
 from enum import Enum
 
 import nextcord
@@ -15,7 +16,7 @@ class EmbedColors(Enum):
 
 def getEmbed(name: str, data: list = None) -> nextcord.Embed:
     data = [] if data is None else data
-    embed = dict(Configuration.get()["Embeds"][name]).copy()
+    embed = copy.deepcopy(Configuration.get()["Embeds"][name])
     setPlaceholders(embed, data)
     return nextcord.Embed.from_dict(embed)
 
